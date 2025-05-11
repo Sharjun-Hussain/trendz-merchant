@@ -1,0 +1,172 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:trendz_merchant/Models/service_modal.dart';
+import 'package:trendz_merchant/Services/api_services.dart';
+
+class CreateOffer extends StatefulWidget {
+  final Map<String, dynamic>? offer;
+  const CreateOffer({super.key, this.offer});
+
+  @override
+  State<CreateOffer> createState() => _CreateOfferState();
+}
+
+class _CreateOfferState extends State<CreateOffer> {
+  late TextEditingController titleController;
+  late TextEditingController codeController;
+  late TextEditingController descriptionController;
+  late TextEditingController discountController;
+  late TextEditingController serviceController;
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController(text: widget.offer?['title']);
+    codeController = TextEditingController(text: widget.offer?['code']);
+    descriptionController =
+        TextEditingController(text: widget.offer?['description']);
+    discountController = TextEditingController(text: widget.offer?['discount']);
+    serviceController = TextEditingController(text: widget.offer?['service']);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(widget.offer == null ? 'Create Offer' : 'Edit Offer'),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              decoration: const InputDecoration(labelText: 'Offer Title'),
+            ),
+            TextField(
+              decoration: const InputDecoration(labelText: 'Offer Coupon Code'),
+            ),
+            TextField(
+              decoration: const InputDecoration(labelText: 'Description'),
+            ),
+            TextField(
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(labelText: 'Discount'),
+            ),
+            TextField(
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(labelText: 'Service'),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            if (titleController.text.isEmpty ||
+                codeController.text.isEmpty ||
+                descriptionController.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Please fill all fields')),
+              );
+              return;
+            }
+
+            Map<String, dynamic> newoffeO = {
+              'title': titleController.text,
+              'description': descriptionController.text,
+              'discount': double.parse(discountController.text),
+              'code': codeController.text,
+              'service': double.parse(serviceController.text),
+            };
+            Future<void> createService() async {
+              try {
+                // Convert the map to the Services object
+                // Services service = Services.fromJson(widget.offer);
+
+                // // Assign the created service to the 'services' future (if needed)
+                // setState(() {
+                //   services = Future.value(
+                //       service); // You can use Future.value to wrap the service object in a Future
+                // });
+
+                // Handle any additional logic, like API calls if necessary
+              } catch (e) {
+                // Handle error if any
+                print('Error    eeeeeee: $e.toString()');
+
+                //Error in the above code is that the newService
+
+                //////------------------------------------------------------------------------------------
+                //////------------------------------------------------------------------------------------
+                //////------------------------------------------------------------------------------------
+              }
+            }
+
+            try {
+              // setState(() {
+              //   services = apiService.fetchServices();
+              // });
+
+              createService();
+
+              if (widget.offer == null) {
+                // Add New Service
+                String createdService =
+                    await ApiService().createService(newService);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Service created successfully')),
+                );
+
+                Navigator.pop(context);
+              } else {
+                // Update Existing Service
+                newService['id'] = service.id;
+                await ApiService().updateService(service.id!, newService);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Service updated successfully')),
+                );
+                Navigator.pop(context);
+
+                // setState(() {
+                //     services[index!] = newService; // Update UI with edited service
+
+                //   });
+              }
+              // } else {
+              // EDIT: Call API to update service
+              //   newService['id'] = service['id'];
+              //   Map<String, dynamic> updatedService = await ApiService()
+              //       .updateService(service['id'], newService);
+
+              //   setState(() {
+              //     services[index!] =
+              //         updatedService; // Update UI with edited service
+              //     isLoading = false;
+              //   });
+              //   ScaffoldMessenger.of(context).showSnackBar(
+              //     const SnackBar(
+              //         content: Text('Service updated successfully')),
+              //   );
+              //   Navigator.pop(context);
+              // }
+            } catch (e) {
+              setState(() {});
+              print(e);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Error: $e')),
+              );
+
+              //There is an error in the above code. The error is in the commented code.
+              //if i uncomment it then it will show an error of type error in the code.
+              //============================================================================================================
+              //============================================================================================================
+              //============================================================================================================
+            }
+          },
+          child: const Text('Save'),
+        ),
+      ],
+    );
+  }
+}
