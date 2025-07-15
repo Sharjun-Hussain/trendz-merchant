@@ -8,7 +8,7 @@ const securestorage = FlutterSecureStorage();
 
 class ApiService {
   final Dio _dio = Dio(BaseOptions(
-    baseUrl: "http://192.168.1.11:8000",
+    baseUrl: "http://35.169.19.237:8000",
     headers: {"Content-Type": "application/json"},
   ));
 

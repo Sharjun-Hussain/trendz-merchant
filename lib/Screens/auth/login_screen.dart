@@ -18,39 +18,40 @@ class LoginScreen extends StatefulWidget {
 
   void handleLogin(BuildContext context,
       Future<Map<String, dynamic>> Function() loginMethod) async {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const HomeScreen()),
-      (Route<dynamic> route) => false,
-    );
-    // try {
-    //   final response = await loginMethod();
-    //   final user = User.fromJson(response);
+    // Navigator.pushAndRemoveUntil(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const HomeScreen()),
+    //   (Route<dynamic> route) => false,
+    // );
+    try {
+      final response = await loginMethod();
+      // final user = User.fromJson(response);
+      // print(user.toJson());
 
-    //   await securestorage.write(key: "token", value: user.token);
-    //   await securestorage.write(key: "userid", value: user.id.toString());
-    //   await securestorage.write(key: "fullname", value: user.name);
-    //   await securestorage.write(key: "email", value: user.email);
-    //   await securestorage.write(key: "status", value: user.status.toString());
-    //   await securestorage.write(
-    //       key: "saloon_id", value: user.saloon_id.toString());
-    //   await securestorage.write(key: "image", value: user.image);
-    //   await securestorage.write(key: "saloon_name", value: user.saloon_name);
-    //   await securestorage.write(key: "branch", value: user.branch);
+      // await securestorage.write(key: "token", value: user.token);
+      // await securestorage.write(key: "userid", value: user.id.toString());
+      // await securestorage.write(key: "fullname", value: user.name);
+      // await securestorage.write(key: "email", value: user.email);
+      // await securestorage.write(key: "status", value: user.status.toString());
+      // await securestorage.write(
+      //     key: "saloon_id", value: user.saloon_id.toString());
+      // await securestorage.write(key: "image", value: user.image);
+      // await securestorage.write(key: "saloon_name", value: user.saloon_name);
+      // await securestorage.write(key: "branch", value: user.branch);
 
-    //   Provider.of<UserProvider>(context, listen: false).setUser(user);
-    //   Navigator.pushAndRemoveUntil(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => const HomeScreen()),
-    //     (Route<dynamic> route) => false,
-    //   );
-    // } catch (e) {
-    //   if (kDebugMode) {
-    //     print(e.toString());
-    //   }
-    //   ScaffoldMessenger.of(context)
-    //       .showSnackBar(SnackBar(content: Text(e.toString())));
-    // }
+      // Provider.of<UserProvider>(context, listen: false).setUser(user);
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        (Route<dynamic> route) => false,
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
+    }
   }
 
   @override
